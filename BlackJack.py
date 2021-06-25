@@ -6,7 +6,6 @@ import random
 def displayMenu():
     print("BLACKJACK!")
     print("BlackJack payout is 3:2")
-    
 
 def dealerHand(deck):
     dealerHand = []
