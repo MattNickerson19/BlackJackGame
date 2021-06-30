@@ -12,22 +12,22 @@ def playGame(deck):
     dealerHand = []
 
     dealerValue = 0
-    while dealerValue <17:
-        dealCard = random.randint(0,len(deck)-1)
-        dealerCard = deck[dealCard]
-        dealerHand.append(dealerCard)
+    while True:
+        if dealerValue < 17:
+            dealCard = random.randint(0,len(deck)-1)
+            dealerCard = deck[dealCard]
+            dealerHand.append(dealerCard)
+            dealerValue = 0
+            for card in dealerHand:
+                dealerValue += int(card[2])
+        elif dealerValue >= 17:
+            break
+               
         
-        for card in dealerHand:
-            dealerValue += int(card[2])
-            
-        
-        
-            
     print("\nDEALER'S SHOW CARD:")
     print(dealerHand[0][0], "of", dealerHand[0][1])
 
-
-            
+    
 #PLAYER HAND
     playerHand = []
 
@@ -43,6 +43,7 @@ def playGame(deck):
             print(card[0],"of", card[1])
             playerValue += int(card[2])
     playerMove = input("\nHit or Stand? (hit/stand):  ")
+
     while True:
         
         if playerMove.lower() == "hit":
@@ -65,35 +66,34 @@ def playGame(deck):
             playerMove = input("\nHit or Stand? (hit/stand):  ")
 
 
-#SHOW DEALER HAND
+#SHOW DEALER HAND AND POINTS
     print("\nDEALER'S CARDS")
     for card in dealerHand:
             print(card[0],"of", card[1])
-    
 
-    print()
-    
-    print(dealerValue)
-    
+    print("\nYOUR POINTS:\t", playerValue)
+    print("DEALER'S POINTS:\t", dealerValue)
 
-def writeFile(moneyAmount):
-    with open ("money.csv", "w", newline = "") as file:
-            writer = csv.writer(file)
-            writer.writerows(moneyAmount)
+#DETERMINE WINNER
+    if playerValue > 21:
+        print("\nSorry. You lose.")
 
+    elif dealerValue > 21 and playerValue <= 21:
+        print("\nDealer busts. You win,")
 
-def readFile():
-        with open("money.csv", "r", newline = "") as file:
-            moneyAmount = []
-            reader = csv.reader(file)
-            for row in reader:
-                moneyAmount.append(row)
-            return moneyAmount
+    elif playerValue <= 21 and playerValue > dealerValue:
+        print("\nCongrats. You win")
+
+    elif dealerValue <= 21 and dealerValue > playerValue:
+        print("\nSorry. You lose")
+
+    elif playerValue <= 21 and playerValue == dealerValue:
+        print("\nTie. Bets returned")
+            
 
 
 def main():
-    deck = [["1","hearts",1],["1","diamonds",1],["1","clubs",1],["1","spades",1],
-                  ["2","hearts",2], ["2","diamonds",2],["2","clubs",2],["2","spades",2],
+    deck = [["2","hearts",2], ["2","diamonds",2],["2","clubs",2],["2","spades",2],
                   ["3","hearts",3], ["3","diamonds",3],["3","clubs",3],["3","spades",3],
                   ["4","hearts",4], ["4","diamonds",4],["4","clubs",4],["4","spades",4],
                   ["5","hearts",5], ["5","diamonds",5],["5","clubs",5],["5","spades",5],
@@ -108,8 +108,12 @@ def main():
                   ["Ace","hearts",1,11],["Ace","diamonds",1,11],["Ace","clubs",1,11],["Ace","spades",1,11]]
 
     displayMenu()
-    moneyAmount = readFile()
-    playGame(deck)
+
+    playAgain = "y"
+    while playAgain.lower() == "y":
+        playGame(deck)
+        playAgain = input("\nPlay again? (y/n):  ")
+    print("Come back soon")
     
    
 
