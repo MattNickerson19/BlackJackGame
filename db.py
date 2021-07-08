@@ -1,35 +1,36 @@
 #!/usr/bin/env python3
-import csv as file
-import sys
+import csv 
+
 
 FILENAME = "money.csv"
 
 def writeFile(moneyAmount):
     try:
-        with open ("money.csv", "w", newline = "") as file:
+        with open (FILENAME, "w", newline = "") as file:
             writer = csv.writer(file)
             writer.writerows(moneyAmount)
     except Exception as e:
         print(type(e), e)
-        exitProgram()
+        
 
 def readFile():
-        try:
-            with open("money.csv", "r", newline = "") as file:
-            moneyAmount = []
+    try:
+        moneyAmount = []
+        with open(FILENAME, "r", newline = "") as file:
             reader = csv.reader(file)
             for row in reader:
                 moneyAmount.append(row)
-            return moneyAmount
-        except FileNotFoundError:
-            print("Cound not find", FILENAME, "file")
-            exitProgram()
-        except Exception as e:
-            print(type(e), e)
-            exitProgram()
+            print("Money:\t",moneyAmount[0][0])
+            return int(moneyAmount[0][0])
+    except FileNotFoundError:
+        print("Cound not find", FILENAME, "file")
+        
+    except Exception as e:
+        print(type(e), e)
+        
 
-def exitProgram ():
-    print("Terminating program.")
-    eye.exit()
+
+
+
 
     

@@ -2,6 +2,7 @@
 
 import csv
 import random
+import db
 
 def displayMenu():
     print("BLACKJACK!")
@@ -81,21 +82,31 @@ def playGame(deck):
     print("DEALER'S POINTS:\t", dealerValue)
 
 #DETERMINE WINNER
+    playerWins = False
     if playerValue > 21:
         print("\nYOU BUSTED.")
+        moneyAmount = db.readFile()
+        return playerWins
 
     elif dealerValue > 21 and playerValue <= 21:
         print("\nDealer busts. You win,")
+        playerWins = True
+        moneyAmount = db.readFile()
+        return playerWins
 
     elif playerValue <= 21 and playerValue > dealerValue:
         print("\nCongrats. You win")
+        playerWins = True
+        moneyAmount = db.readFile()
+        return playerWins
 
     elif dealerValue <= 21 and dealerValue > playerValue:
         print("\nSorry. You lose")
+        moneyAmount = db.readFile()
+        return playerWins
 
     elif playerValue <= 21 and playerValue == dealerValue:
         print("\nTie. Bets returned")
-            
 
 
 def main():
@@ -114,10 +125,22 @@ def main():
                   ["Ace","hearts",1,11],["Ace","diamonds",1,11],["Ace","clubs",1,11],["Ace","spades",1,11]]
 
     displayMenu()
-
+    print()
+    
     playAgain = "y"
     while playAgain.lower() == "y":
-        playGame(deck)
+        moneyAmount = db.readFile()
+        betAmount = float(input("Bet:\t"))
+        playerWins = playGame(deck)
+        if playerWins == True:
+            payOutAmount = round((betAmount *1.5) + moneyAmount,2)
+            print(payOutAmount)
+        else:
+            payOutAmount = round(betAmount - (2 * betAmount) + moneyAmount,2)
+            print(payOutAmount)
+
+        bankAccount = str(payOutAmount)
+        db.writeFile(bankAccount)
         playAgain = input("\nPlay again? (y/n):  ")
     print("Come back soon")
     
