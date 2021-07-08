@@ -45,25 +45,31 @@ def playGame(deck):
     playerMove = input("\nHit or Stand? (hit/stand):  ")
 
     while True:
-        
-        if playerMove.lower() == "hit":
-            dealCard = random.randint(0,len(deck)-1)
-            playerCard = deck[dealCard]
-            playerHand.append(playerCard)
-            
-            print("\nPLAYER'S CARDS:")
-            playerValue = 0
-            for card in playerHand:
-                print(card[0],"of", card[1])
-                playerValue += int(card[2])
-            playerMove = input("\nHit or Stand? (hit/stand):  ")
+        try:
+            if playerMove.lower() == "hit":
+                dealCard = random.randint(0,len(deck)-1)
+                playerCard = deck[dealCard]
+                playerHand.append(playerCard)
+                
+                print("\nPLAYER'S CARDS:")
+                playerValue = 0
+                for card in playerHand:
+                    print(card[0],"of", card[1])
+                    playerValue += int(card[2])
+                if playerValue > 21:
+                    break
+                else:
+                    playerMove = input("\nHit or Stand? (hit/stand):  ")
+                    
 
-        elif playerMove.lower() == "stand":
-            break
-        
-        else:
-            print("Not valid Entry")
-            playerMove = input("\nHit or Stand? (hit/stand):  ")
+            elif playerMove.lower() == "stand":
+                break
+            
+            else:
+                print("Not valid Entry")
+                playerMove = input("\nHit or Stand? (hit/stand):  ")
+        except ValueError:
+            print("Invalid Entry")
 
 
 #SHOW DEALER HAND AND POINTS
@@ -76,7 +82,7 @@ def playGame(deck):
 
 #DETERMINE WINNER
     if playerValue > 21:
-        print("\nSorry. You lose.")
+        print("\nYOU BUSTED.")
 
     elif dealerValue > 21 and playerValue <= 21:
         print("\nDealer busts. You win,")
