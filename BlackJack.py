@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 import random
 import db
 
@@ -24,7 +23,6 @@ def playGame(deck):
         elif dealerValue >= 17:
             break
                
-        
     print("\nDEALER'S SHOW CARD:")
     print(dealerHand[0][0], "of", dealerHand[0][1])
 
@@ -62,7 +60,6 @@ def playGame(deck):
                 else:
                     playerMove = input("\nHit or Stand? (hit/stand):  ")
                     
-
             elif playerMove.lower() == "stand":
                 break
             
@@ -82,31 +79,29 @@ def playGame(deck):
     print("DEALER'S POINTS:\t", dealerValue)
 
 #DETERMINE WINNER
-    playerWins = False
+    playerWins = 0
     if playerValue > 21:
         print("\nYOU BUSTED.")
-        moneyAmount = db.readFile()
         return playerWins
 
     elif dealerValue > 21 and playerValue <= 21:
         print("\nDealer busts. You win,")
-        playerWins = True
-        moneyAmount = db.readFile()
+        playerWins = 1
         return playerWins
 
     elif playerValue <= 21 and playerValue > dealerValue:
         print("\nCongrats. You win")
-        playerWins = True
-        moneyAmount = db.readFile()
+        playerWins = 1
         return playerWins
 
     elif dealerValue <= 21 and dealerValue > playerValue:
         print("\nSorry. You lose")
-        moneyAmount = db.readFile()
         return playerWins
 
     elif playerValue <= 21 and playerValue == dealerValue:
         print("\nTie. Bets returned")
+        playerWins = 2
+        return playerWins
 
 
 def main():
@@ -130,24 +125,35 @@ def main():
     playAgain = "y"
     while playAgain.lower() == "y":
         moneyAmount = db.readFile()
+        
         betAmount = float(input("Bet:\t"))
+        while betAmount < 5 or betAmount > 1000:
+            print("Min bet is $5, Max bet is $1000")
+            betAmount = float(input("Bet:\t"))
+        while betAmount > moneyAmount:
+            print("insufficient funds")
+            betAmount = float(input("Bet:\t"))
+            
         playerWins = playGame(deck)
-        if playerWins == True:
+        if playerWins == 1:
             payOutAmount = round((betAmount *1.5) + moneyAmount,2)
-            print(payOutAmount)
+            print("Money:\t",payOutAmount)
+        elif playerWins == 2:
+            payOutAmount = round(betAmount,2)
+            print("Money:\t",payOutAmount)
         else:
             payOutAmount = round(betAmount - (2 * betAmount) + moneyAmount,2)
-            print(payOutAmount)
-            payOutAmount = str(payOutAmount)
+            print("Money:\t",payOutAmount)
+            
 
-        
+        if payOutAmount < 5:
+            print("You must buy more chips.")
+            payOutAmount = float(input("Enter number of chips: "))
+
+        payOutAmount = str(payOutAmount)
         db.writeFile(payOutAmount)
         playAgain = input("\nPlay again? (y/n):  ")
     print("Come back soon")
     
-   
-
-
-
 if __name__ == "__main__":
     main()
