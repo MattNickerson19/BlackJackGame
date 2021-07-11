@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
-import csv 
 
 
-FILENAME = "money.csv"
 
-def writeFile(moneyAmount):
+FILENAME = "money.txt"
+
+def writeFile(payOutAmount):
     try:
         with open (FILENAME, "w", newline = "") as file:
-            writer = csv.writer(file)
-            writer.writerows(moneyAmount)
+            file.write(str(payOutAmount))
     except Exception as e:
         print(type(e), e)
         
@@ -17,11 +16,10 @@ def readFile():
     try:
         moneyAmount = []
         with open(FILENAME, "r", newline = "") as file:
-            reader = csv.reader(file)
-            for row in reader:
-                moneyAmount.append(row)
+            money = file.readlines()
+            moneyAmount.append(money)
             print("Money:\t",moneyAmount[0][0])
-            return int(moneyAmount[0][0])
+            return float(moneyAmount[0][0])
     except FileNotFoundError:
         print("Cound not find", FILENAME, "file")
         

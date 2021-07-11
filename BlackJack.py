@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import csv
+
 import random
 import db
 
@@ -138,9 +138,10 @@ def main():
         else:
             payOutAmount = round(betAmount - (2 * betAmount) + moneyAmount,2)
             print(payOutAmount)
+            payOutAmount = str(payOutAmount)
 
-        bankAccount = str(payOutAmount)
-        db.writeFile(bankAccount)
+        
+        db.writeFile(payOutAmount)
         playAgain = input("\nPlay again? (y/n):  ")
     print("Come back soon")
     
