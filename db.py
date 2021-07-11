@@ -27,8 +27,3 @@ def readFile():
         print(type(e), e)
         
 
-
-
-
-
-    

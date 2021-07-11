@@ -69,7 +69,6 @@ def playGame(deck):
         except ValueError:
             print("Invalid Entry")
 
-
 #SHOW DEALER HAND AND POINTS
     print("\nDEALER'S CARDS")
     for card in dealerHand:
